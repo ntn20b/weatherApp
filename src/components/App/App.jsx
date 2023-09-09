@@ -64,7 +64,7 @@ function App() {
           <div className="time">{currentTime + ":00"} </div>
 
           {weather.main && weather.main.temp && (
-            <p className="temp">  {Math.round(weather.main.temp)}°C</p>
+            <p className="temp"> {Math.round(weather.main.temp)}°C</p>
           )}
 
           {weather.weather && weather.weather.length > 0 && (
