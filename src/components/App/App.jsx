@@ -40,6 +40,7 @@ function App() {
 
   return (
     <div className="container">
+      <h1>Hey</h1>
       <div className="searchBox">
         <input
           type="text"
