@@ -1,47 +1,112 @@
 body {
   background-color: rgb(32, 33, 34);
   color: rgb(224, 231, 235);
+  overflow: hidden;
+  margin: 0;
+  padding: 8px;
 
   .container {
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-    .searchBox {
-      text-align: center;
-      input {
-        width: 100%;
-        height: 25px;
-        border-radius: 20px;
-        font-size: 20px;
+    height: max-content;
+    width: 100vw;
 
+    main {
+      max-width: 1000px;
+      margin: auto;
+      text-align: center;
+
+      .searchBox {
         text-align: center;
+        input {
+          width: 100%;
+          height: 25px;
+          border-radius: 20px;
+          font-size: 20px;
+
+          text-align: center;
+        }
+      }
+
+      .location {
+        margin-top: 50px !important;
+        width: max-content;
+        margin: auto;
+        padding: 10px 15px;
+
+        border-radius: 20px;
+
+        background-color: rgba(185, 179, 179, 0.425);
+        color: rgb(236, 227, 227);
+
+        .date,
+        .time {
+          font-size: 20px;
+          font-weight: 600;
+        }
+
+        .temp {
+          font-weight: 900;
+          font-size: 25px;
+        }
+
+        img {
+          width: 70px;
+        }
       }
     }
 
-    .location {
-     margin-top: 50px !important;
-      width: max-content;
-      margin: auto;
-      padding: 20px 40px;
+    .container_button {
+      position: absolute;
+      width: 120px;
+      top: 0;
 
-      border-radius: 20px;
+      z-index: 1000;
 
+      cursor: pointer;
+
+      transition: all 1.5s;
+
+      .arrow {
+        display: block;
+        margin: 30px auto;
+        width: 25px;
+        height: 25px;
+        border-top: 2px solid #000;
+        border-left: 2px solid #000;
+        transform: rotate(-45deg);
+
+        transition: all 1.5s;
+      }
+
+      .arrow::before {
+        content: "";
+        display: block;
+        width: 2px;
+        height: 45px;
+        background-color: black;
+        transform: rotate(-45deg) translate(15px, 4px);
+        left: 0;
+        top: 0;
+      }
+    }
+
+    aside {
+      position: absolute;
       background-color: rgba(185, 179, 179, 0.425);
-      color: rgb(236, 227, 227);
+      top: 0;
 
-      .date, .time{
-        font-size: 20px;
-        font-weight: 600;
-      }
+      width: 320px;
+      height: 100%;
 
-      .temp{
-        font-weight: 900;
-        font-size: 25px;
-      }
+      transition: all 1.5s;
 
-      img{
-        width: 70px;
+      .container {
+        margin: 200px auto;
+        width: max-content;
       }
     }
   }
+}
+
+.flipped {
+  transform: rotate(135deg) !important;
 }

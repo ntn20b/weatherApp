@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
 import "moment/locale/ru";
+import Location from "../LocationCard/Location";
 
 import "./App.scss";
 
@@ -18,6 +19,8 @@ function App() {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
 
+  const [history, setHistory] = useState([]);
+
   const search = (evt) => {
     if (evt.key === "Enter") {
       fetch(`${api.base}weather?q=${query}&appid=${api.key}&units=metric`)
@@ -25,7 +28,10 @@ function App() {
         .then((result) => {
           setWeather(result);
           setQuery("");
-          console.log(result);
+          setHistory((prevHistory) => [
+            { name: result.name, temperature: result.main.temp },
+            ...prevHistory,
+          ]);
         });
     }
   };
@@ -38,50 +44,61 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  const [elementRight, setElementRight] = useState({
+    aside: "-200px",
+    button: "0",
+    arrow: false,
+  });
+
+  function handleButtonClick() {
+    setElementRight((prevState) => ({
+      aside: prevState.aside === "0" ? "-200px" : "0",
+      button: prevState.button === "0" ? "200px" : "0",
+      arrow: !prevState.arrow,
+    }));
+  }
+
   return (
     <div className="container">
-      <h1>Hey</h1>
-      <div className="searchBox">
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search..."
-          onChange={(e) => setQuery(e.target.value)}
-          value={query}
-          onKeyPress={search}
-        />
+      <main>
+        <h1>print your city</h1>
+        <div className="searchBox">
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search..."
+            onChange={(e) => setQuery(e.target.value)}
+            value={query}
+            onKeyPress={search}
+          />
+        </div>
+
+        {typeof weather.main != "undefined" ? (
+          <Location weather={weather} date={date} currentTime={currentTime} />
+        ) : (
+          ""
+        )}
+      </main>
+
+      <div
+        className="container_button"
+        onClick={handleButtonClick}
+        style={{ right: elementRight.button }}
+      >
+        <div className={`arrow ${elementRight.arrow ? "flipped" : ""}`}></div>
       </div>
 
-      {typeof weather.main != "undefined" ? (
-        <div className="location">
-          {weather.name && weather.sys && weather.sys.country && (
-            <p>
-              {weather.name} {weather.sys.country}
-            </p>
-          )}
-
-          <div className="date">{date}</div>
-
-          <div className="time">{currentTime + ":00"} </div>
-
-          {weather.main && weather.main.temp && (
-            <p className="temp"> {Math.round(weather.main.temp)}°C</p>
-          )}
-
-          {weather.weather && weather.weather.length > 0 && (
-            <img
-              src={`https://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
-              alt="Погода"
-            />
-          )}
-
-          {weather.weather && weather.weather.length > 0 && (
-            <p>State of weather: {weather.weather[0].description}</p>
-          )}
+      <aside className="history" style={{ right: elementRight.aside }}>
+        <div className="container">
+          <h2>History:</h2>
+          {history.map((item, index) => (
+            <div key={index} className="history-card">
+              <p>{item.name}</p>
+              <p>{item.temperature} °C</p>
+            </div>
+          ))}
         </div>
-      ) : (
-        ""
-      )}
+      </aside>
     </div>
   );
 }
